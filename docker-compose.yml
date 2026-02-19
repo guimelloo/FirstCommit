@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   app:
     build: .
@@ -5,11 +7,12 @@ services:
     volumes:
       - .:/var/www
     ports:
-      - "8000:8000"
+      - "8000:8000"       # Laravel será acessível em localhost:8000
     depends_on:
       - db
     working_dir: /var/www
-    command: php-fpm
+    # Comando para rodar o servidor PHP integrado (opcional: útil para dev)
+    command: php artisan serve --host=0.0.0.0 --port=8000
 
   db:
     image: postgres:16
