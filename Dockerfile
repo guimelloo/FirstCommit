@@ -1,5 +1,6 @@
-FROM php:8.2-fpm
+FROM php:8.4-fpm
 
+# Dependências do sistema
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -8,10 +9,15 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     libpng-dev \
     libonig-dev \
-    libxml2-dev
+    libxml2-dev \
+    nano
 
+# Extensões PHP necessárias
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
+
+CMD ["php-fpm"]

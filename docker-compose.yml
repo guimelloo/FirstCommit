@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build: .
@@ -11,7 +9,7 @@ services:
     depends_on:
       - db
     working_dir: /var/www
-    command: php artisan serve --host=0.0.0.0 --port=8000
+    command: php-fpm
 
   db:
     image: postgres:16
