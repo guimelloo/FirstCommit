@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: firstCommit
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    working_dir: /var/www
+    command: php artisan serve --host=0.0.0.0 --port=8000
+
+  db:
+    image: postgres:16
+    container_name: firstCommit_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: firstCommit
+      POSTGRES_USER: firstCommit
+      POSTGRES_PASSWORD: firstCommitpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
