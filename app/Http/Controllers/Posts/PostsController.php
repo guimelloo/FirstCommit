@@ -8,22 +8,26 @@ use App\Http\Controllers\Controller;
 
 class PostsController extends Controller
 {
-    private $posts;
-
-    public function __construct()
+    public function home()
     {
-        $this->posts = new Post();
+        $posts = Post::latest()->get();
+        return view('welcome', compact('posts'));
     }
 
-    public function index()
+    public function create()
     {
-        $posts = $this->posts->all();
-        return response()->json($posts);
+        return view('posts.create');
     }
 
     public function store(Request $request)
     {
-        $post = $this->posts->create($request->only(['title', 'content']));
-        return response()->json($post, 201);
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string'
+        ]);
+
+        Post::create($validated);
+
+        return redirect('/')->with('success', 'Post created successfully!');
     }
 }
