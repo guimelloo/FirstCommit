@@ -1,7 +1,7 @@
-# Use PHP 8.4 FPM
+# PHP 8.4 FPM
 FROM php:8.4-fpm
 
-# Instalar dependências do sistema
+# Instalar dependências
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -23,5 +23,11 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Definir diretório de trabalho
 WORKDIR /var/www
 
-# Comando padrão (PHP-FPM)
+# Copiar todo o código Laravel para o container
+COPY . /var/www
+
+# Permissões (opcional, mas ajuda)
+RUN chown -R www-data:www-data /var/www
+
+# Comando para o Render: usar porta dinâmica
 CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=$PORT"]
